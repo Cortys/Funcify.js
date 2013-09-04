@@ -119,7 +119,7 @@ pre.right {
 	color: #111111;
 }
 
-a {
+#wrap a {
 	display: inline-block;
 	width: 421px;
 	height: 60px;
@@ -130,14 +130,18 @@ a {
 	text-decoration: none;
 	margin: 2px;
 }
-a:hover {
+#wrap a:hover {
 	background-color: #cc0909;
 }
-a.big {
+#wrap a.big {
 	background-color: #0987e6;
 }
-a.big:hover {
+#wrap a.big:hover {
 	background-color: #087cd4;
+}
+
+#fork {
+	z-index: 2;
 }
 
 ul {
