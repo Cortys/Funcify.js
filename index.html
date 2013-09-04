@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Funcify.js</title>
+	
+	<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+	<div id="wrap">
+		<h1>Funcify.js</h1>
+		<h2><span>001</span> About</h2>
+		<p><span>Funcify.js</span> gives you the power to do the only thing javascript does not like us to do: It lets you make your code changing itself.<br>
+		This is not something anyone needs to accomplish his goals but it changes the way you code.<br><br>
+		You can start writing snippets that could not run at all because they reference to variables that do not exist in their context and then start building working functions out of them. Breaking them down and build other things - at runtime. It is like playing with lego pieces.<br>
+		As I said before: There is no real need for <span>Funcify.js</span> but if you have fun with coding and want to do some crazy experiments (maybe even actual work) just download and have fun!</p>
+		
+		<h2><span>010</span> Download</h2>
+		<a href="funcify.min.js" target="_blank">Funcify.js &middot; 3 KB<br>minified</a><a href="funcify.js" target="_blank" class="big">Funcify.js &middot; 6 KB<br>development</a>
+		<p>Download and do whatever you want. <span>Funcify.js</span> is WTFPL. If you hate credits or just the sound of my name: No problem. Download, modify, sell it. Everything is allowed.</p>
+		
+		<h2><span>011</span> Documentation</h2>
+		<p>Hey. You are still here. Using this little framework is pretty easy. As you should have guessed I'm no magician and I had to follow some basic rules. Let's take a look at them:
+			<ul>
+				<li>At first one little thing: To use Funcify.js the three variables <b>"Funcify", "funcify" and "fy" must not be used!</b></li>
+				<li>You can only change code inside functions. But well you can wrap everything into functions. No problem.</li>
+				<li><span>Funcify.js</span> offers getters and setters for functions.
+					<ul>
+						<li>You can use the getters on any function. So getting an array of the params a function requires or sniffing into its lines is no problem. Just do it.</li>
+						<li>The setters - and that is the thing we are here for - require a little bit more work.<br>All the global functions are fine. So changing this type of function:
+							<pre>&lt;script&gt;
+	function makePie() {
+		return new DelicousPie("with apples");
+	}
+	var makeBacon = function(shouldWeBurnIt) {
+		return "We ate all the bacon yesterday.";
+	}
+	window.thatIsTheSameTypeOf = function(asWeHaveSeen) {
+		return "two times now";
+	}
+&lt;/script&gt;</pre>
+						is absolutely no problem. Let's see how to handle functions in a local scope:
+							<div class="cont"><table><tr><td><pre class="left">&lt;script&gt;
+// Until now:
+element.onclick = function(e) {
+	function inLocalContext() {
+		// Does stuff...	
+	}
+	var object = {
+		property: function() {
+			return this;
+		}
+	};
+}
+&lt;/script&gt;</pre></td><td><pre class="right">&lt;script&gt;
+// Funcify.js compatible:
+element.onclick = function(e) {
+	var inLocalContext = <span>fy(</span>function() {
+		// Does stuff...	
+	}<span>)</span>;
+	var object = {
+		property: <span>fy(</span>function() {
+			return this;
+		}<span>)</span>
+	};
+}
+&lt;/script&gt;</pre></td></tr></table></div>
+							And that is all you have to do with your functions to <b>gain full read and write access to them</b>. (And if you like the <i>fys</i> you can <i>fy</i> the global functions as well. If you want to. Just sayin'.)
+						</li>
+					</ul>
+				</li>
+			</ul>
+			Now that you know the rules let's see how to use <span>Funcify.js</span>. The following methods are part of <b>every</b> function after embeding the framework. You can call them as you would call the "apply" method of a function.
+			<ul>
+				<li><h3>Getters:</h3>
+					<ul>
+						<li>
+							<h4>.get( [No format = false] )</h4>
+							<h5>.get( [No param format = false], [No body format = false] )</h5>
+							<p>Returns the name, parameters and body of a function in a key-value object: <i>{name, params, lines}</i>.<br>
+							Params and body are given as arrays of variable names/lines of code (empty lines are not listed). If you want just the strings (including empty lines of code) set the "<i>no format</i>"-option for either or both values to <i>true</i>.</p>
+						</li>
+						<li>
+							<h4>.getLines( [No format = false] )</h4>
+							<p>Like <b>.get()</b> but returns only the lines of code. Either as array (<i>false</i>) or string (<i>true</i>).</p>
+						</li>
+						<li>
+							<h4>.getParams( [No format = false] )</h4>
+							<p>Like <b>.get()</b> but returns only the parameters of the function. Either as array (<i>false</i>) or string (<i>true</i>).</p>
+						</li>
+					</ul>
+				</li>
+				<li><h3>Setters:</h3>
+					<ul>
+						<li>
+							<h4>.set( params, body )</h4>
+							<h5>.set( get result object )</h5>
+							<h5>.set( function )</h5>
+							<p>Changes the params and body of a function (must be declared with <i>fy</i>, as shown above, or be a global function). Params and body can be given as two strings (params seperated by commas, lines seperated by whitespaces) or as two arrays of strings. Alternatively you can just pass an object structured like the objects returned by <b>.get()</b> or give a function and the calling function will become an exact copy of it.<br>
+							This method and all the other setters return a boolean telling you if the change could be made.</p>
+						</li>
+						<li>
+							<h4>.setLines( lines )</h4>
+							<p>Changes only the lines of code. "<i>lines</i>" has to be given as string, array or function (just the body will be used).</p>
+						</li>
+						<li>
+							<h4>.setParams( params )</h4>
+							<p>Changes only the parameters of a function. "<i>params</i>" has to be given as string, array or function (just the params will be used).</p>
+						</li>
+						<li>
+							<h4>.modifyLines( position, delete count, [new lines] )</h4>
+							<p>Modifies the body of a function partly. The parameters are exactly like Javascript's "splice" for arrays. "<i>position</i>" specifies a line (counting starts at zero obviously, negative numbers to specify line from the end) where to begin the modification (<b>remember: Empty lines without any non-whitespace characters are not counted!</b>), "<i>delete count</i>" specifies the number of lines to be removed (can be zero if you just want to insert new lines), "<i>new lines</i>" can be omitted if you just want to remove lines and has to be string, array or function (just the body will be used) to insert new lines at "<i>position</i>".</p>
+						</li>
+						<li>
+							<h4>.addLines( [new lines] )</h4>
+							<p>Like <b>.modifyLines()</b> but simply adds the given new lines (string, array or function) to the end of the function.</p>
+						</li>
+						<li>
+							<h4>.addParams( [new params] )</h4>
+							<p>Like <b>.addLines()</b> but for the parameters of a function. "<i>new params</i>" can be given as string, array or function (just the params of it will be added).</p>
+						</li>
+					</ul>
+				</li>
+				<li><h3>Creator:</h3>
+					<h4>Function.make( params, body )</h4>
+					<h5>Function.make( get result object )</h5>
+					<h5>Function.make( function )</h5>
+					<p>Actually is the same as <b>.set()</b> but returns a new function instead of changing an existing one. So the parameters are give the same way. Of course the new function is already "fy"-ed.</p>
+				</li>
+			</ul>
+			<b>Note:</b> All this methods can be used in a non OOP-like way. Just call "funcify.methodName(function, param1, param2, ...)". The function to change / to read from is prepended as the first parameter. The <b>.make()</b>-method is completely the same, just replace "Function" with "funcify".
+		</p>
+		
+		<h2><span>100</span> Example:</h2>
+		<p>
+			As we both know all this documentation stuff does not really help to learn a new thing, so here is a pretty basic example:
+			<pre>&lt;script&gt;
+	var count = <span>fy(</span>function(b) { // The fy is not actually required here.
+		var s = 0;
+		for (var i = 0; i < b; i++) {
+			s += i;
+		}
+		return s;
+	}<span>)</span>;
+	
+	function square() { // This definition also works in global context.
+		return s*s;
+	}
+	
+	count(10); // => 45
+	count<span>.get();</span> // => { params:['b'], lines:['var s = 0;', 'for (var i = 0; i < b; i++) {', ...] }
+	count<span>.modifyLines(-1, 1, square);</span> // last line of "count" was replaced with lines of "square"
+	count(10); // => <span>2025</span> (now permanently returns the square of the sum)
+&lt;/script&gt;</pre>
+			I hope you can see the possibilities and dangers of this simple but effective technique to work with code. It is very easy to produce incorrect code by using wrong line numbers etc. To reduce problems <span>Funcify.js</span> will throw the error exceptions right when a wrong change was made and not when the "bad" function is invoked the first time.
+		</p>
+		<div id="endFoot">
+			Created by Clemens Damke in 2013
+		</div>
+	</div>
+	
+	<div id="foot">2013 &middot; Clemens Damke</div>
+</body>
+</html>
