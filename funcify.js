@@ -1,5 +1,5 @@
 /**
- * Funcify.js 1.1
+ * Funcify.js 1.1.1
  * 2013 - Clemens Damke
  * License: WTFPL - Have fun! Credits only if you want to.
  */
@@ -14,10 +14,10 @@ var Funcify = function(pGlobal) {
 		list = [], // List of changable functions
 		count = 0, // Counter for more flexible handling of the list-functions. May become useful later on.
 		reg = /^function[^(]+\(([^)]*)\)\s*\{[\s]{0,1}([\s\S]*)\}$/, // RegEx gives params and body of a function.
-		newline = "\n";
+		newline = "\n"; // New-Line character for string creation, NOT splitting
 	
 	function splitFuncStr(func) { // Get params and body of func as 2 strings
-		if(isFyed(func))
+		if(isFyed(func) && func.container)
 			func = list[func.funcifyId];
 		if(func.getRaw) // Do regex-exec only once for faster future requests.
 			return func.getRaw;
@@ -55,6 +55,7 @@ var Funcify = function(pGlobal) {
 		// Following sets could be too slow... (Maybe use a seperate prototype layer between fy-function an Function-Obj?)
 		var set = {
 			funcifyId: id,
+			container: true, // Used in splitFuncStr: Original funcs and containers both have funcifyIds. Used to distinguish them.
 			"toString": function() { return list[id].toString(); }
 		};
 		for(var key in set)
