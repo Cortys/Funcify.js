@@ -9,15 +9,24 @@
 <body>
 	<div id="wrap">
 		<h1>Funcify.js</h1>
-		<h2><span>001</span> About</h2>
-		<p><span>Funcify.js</span> gives you the power to do the only thing javascript does not like us to do: It lets you make your code changing itself.<br>
+		<h2><span>000</span> About</h2>
+		<p><span>Funcify.js</span> gives you the power to do the only thing Javascript does not like us to do: It lets you make your code changing itself.<br>
 		This is not something anyone needs to accomplish his goals but it changes the way you code.<br><br>
 		You can start writing snippets that could not run at all because they reference to variables that do not exist in their context and then start building working functions out of them. Breaking them down and build other things - at runtime. It is like playing with lego pieces.<br>
 		As I said before: There is no real need for <span>Funcify.js</span> but if you have fun with coding and want to do some crazy experiments (maybe even actual work) just download and have fun!</p>
 		
+		<h2><span>001</span> News <span class="right">UT1384276924</span></h2>
+		<p>To finish the initial goal of <span>Funcify.js</span> the <b>1.1</b> update was just released. It features all the things I found to be ugly in 1.0. These things are new:
+			<ul>
+				<li>One important <u>shortcut function</u>: <b>.replaceLines()</b>. To do a function templating engine or similar this is what you need to get started quickly. It's just like "String.replace()" but for functions. Look it up in the docs.</li>
+				<li>Pretty much full <u>Node.js support</u>. Global scoping is a bit different, as described in the docs.</li>
+				<li>Removed ugly junk and made everything <u>cleaner and probably faster</u>... (Haven't measured it yet to be honest.)</li>
+			</ul>
+		</p>
+		
 		<h2><span>010</span> Download</h2>
-		<a href="funcify.min.js" target="_blank">Funcify.js &middot; 3 KB<br>minified</a><a href="funcify.js" target="_blank" class="big">Funcify.js &middot; 6 KB<br>development</a>
-		<p>Download and do whatever you want. <span>Funcify.js</span> is WTFPL. If you hate credits or just the sound of my name: No problem. Download, modify, sell it. Everything is allowed.</p>
+		<a href="funcify-1.1.min.js" target="_blank">Funcify.js 1.1 &middot; 3 KB<br>minified</a><a href="funcify-1.1.js" target="_blank" class="big">Funcify.js 1.1 &middot; 8 KB<br>development</a>
+		<p>Download and do whatever you want. <span>Funcify.js</span> is WTFPL. If you hate credits or just the sound of my name: No problem. Download, modify, sell it. Everything is allowed. Older versions can be found on GitHub.</p>
 		
 		<h2><span>011</span> Documentation</h2>
 		<p>Hey. You are still here. Using this little framework is pretty easy. As you should have guessed I'm no magician and I had to follow some basic rules. Let's take a look at them:
@@ -65,7 +74,11 @@ element.onclick = function(e) {
 	};
 }
 &lt;/script&gt;</pre></td></tr></table></div>
-							And that is all you have to do with your functions to <b>gain full read and write access to them</b>. (And if you like the <i>fys</i> you can <i>fy</i> the global functions as well. If you want to. Just sayin'.)
+							And that is all you have to do with your functions to <b>gain full read and write access to them</b>. (And if you like the <i>fys</i> you can <i>fy</i> the global functions as well. If you want to. Just sayin'.)<br><br>
+							
+							<b class="focus">Hello! Attention! Node.js users:</b> As you have seen all of this was browser stuff. Since version 1.1 <i>Node.js</i> is compatible too but you can only throw your <i>fys</i> away, when you explicitly bind your function to the <i>global</i>-object:
+							<pre>inGlobalContext = function() { // Fancy bubbles... }</pre>
+							Notice? No <i>var</i> in front of it! In every other case a <i>fy</i> is necessary for the setters to work properly.
 						</li>
 					</ul>
 				</li>
@@ -118,6 +131,10 @@ element.onclick = function(e) {
 						<li>
 							<h4>.addParams( [new params] )</h4>
 							<p>Like <b>.addLines()</b> but for the parameters of a function. "<i>new params</i>" can be given as string, array or function (just the params of it will be added).</p>
+						</li>
+						<li>
+							<h4>.replaceLines( needle, replacement, [force replacement content = false] )</h4>
+							<p>Replaces stuff in the body of a function. The parameters are pretty much like Javascript's "replace" for strings. <i>needle</i> is either a string or a regex to look for in the lines of code. The search area can stretch out across multiple lines! No problem. The <i>replacement</i> is a bit more flexible, than in JS's "replace". It can be a string or intelligent replacing-function just as you know and love it. But it can also be an array of lines, the result of a <b>.get()</b>-request on another function, or even another function, which lines of code you want to insert. <b>But wait!</b> How does <span>Funcify.js</span> know when to insert the content of a function, and when to use it as an intelligent replacing-function. <b>It does not.</b> You have to tell it with the <i>force replacement content</i> property. Only if you set it <i>true</i> the lines of a given function will be used.</p>
 						</li>
 					</ul>
 				</li>

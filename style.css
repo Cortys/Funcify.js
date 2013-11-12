@@ -19,6 +19,7 @@ p {
 }
 
 h1, h2, h3 {
+	position: relative;
 	color: #e60a0a;
 	font-family: "Helvetica Neue Ultralight", "Helvetica Neue", Helvetica, Geneva, sans-serif;
 	font-weight: lighter;
@@ -55,6 +56,11 @@ h2 span {
 	font-style: normal;
 	font-size: 15px;
 	margin-right: 10px;
+}
+h2 span.right {
+	position: absolute;
+	right: 0;
+	font-size: 12px;
 }
 h3 {
 	font-size: 18px;
@@ -140,12 +146,35 @@ pre.right {
 	background-color: #087cd4;
 }
 
+#wrap a.old {
+	display: block;
+	width: auto;
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	background: none;
+	color: #e60a0a;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+#wrap a.old:hover {
+	text-decoration: underline;
+}
+
 #fork {
 	z-index: 2;
 }
 
 ul {
 	list-style-type: square;
+}
+
+b.focus {
+	font-size: 18px;
+	position: relative;
+	display: inline-block;
+	margin-right: 10px;
+	margin-left: 10px;
 }
 
 #foot {
